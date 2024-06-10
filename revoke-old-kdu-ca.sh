@@ -24,7 +24,7 @@ echo "DU NS: $DU_NS"
 
 export KUBECONFIG
 export CONSUL_HTTP_ADDR="http://decco-consul-consul-ui.default.svc.cluster.local:80"
-export CONSUL_HTTP_TOKEN=$(yq r .airctl/state.yaml 'kplaneTokenJson' | jq -r '.SecretID')
+export CONSUL_HTTP_TOKEN=$(yq r ~/.airctl/state.yaml 'kplaneTokenJson' | jq -r '.SecretID')
 NOW=`date +%s`
 DIR="$DU_NS-old-ca-removal-$NOW"
 mkdir $DIR
