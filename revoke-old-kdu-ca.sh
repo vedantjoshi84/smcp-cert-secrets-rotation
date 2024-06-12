@@ -63,4 +63,10 @@ echo "{
     \"ca.pem\": \"$new_ca_b64\"
   }
 }" > new_ca_patch.json
+
+kubectl -n $DU_NS patch secret tcp-cert  --patch "$(cat new_ca_patch.json)" --type merge
+echo "restarting pods with socat containers"
+deployments_with_socat=$(kubectl get deployments -n ${DU_NS} -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.template.spec.containers[*].name}{"\n"}{end}' | grep -i "socat" | awk '{print $1}' | tr '\n' ' ')
+eval kubectl -n ${DU_NS} rollout restart deployment ${deployments_with_socat}
+
 popd
